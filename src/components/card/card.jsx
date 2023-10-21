@@ -2,10 +2,10 @@ import React from 'react'
 import CardImage from './CardImage'
 import CardInfo from './CardInfo'
 
-export default function Card({url, name, population,region, capital}){
+export default function Card({url, name, population,region, capital, onClickHandler}){
 	return(
-		<div className="z-[0] bg-white dark:bg-slate-700 rounded-md shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition duration-300 hover:scale-[1.02]">
-			<div>
+		<div data-country={name} onClick={(event)=> onClickHandler(event)} className="z-[0] bg-white dark:bg-slate-700 rounded-md shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition duration-300 hover:scale-[1.02]">
+			<div >
 				<CardImage url={url}/>
 			</div>
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Dropdown({toggleDropdown, active, getRegion}){
 
-	const regions = ["africa", "america", "asia", "europe", "oceania"]
+	const regions = ["all","africa", "america", "asia", "europe", "oceania"]
 
 
 	return(
