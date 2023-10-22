@@ -13,7 +13,7 @@ export default class App extends React.Component{
 		super(props)
 
 		this.state = {
-			theme: localStorage.theme.length == 0 ? 'light' : localStorage.theme,
+			theme: localStorage.theme?.length == 0 ? 'light' : localStorage.theme,
 			active: false, // for dropdown
 			keyword: '', // for searchbox
 			data: [], // data from rest api
@@ -169,9 +169,10 @@ export default class App extends React.Component{
 	render(){
 		
 		const countries = this.state.data
+		const detailCountry = this.state.dataDetails
 
 
-		return (
+		 return (
 			<>
 				<Navbar toggleTheme={this.toggleThemeHandler} theme={this.state.theme}/>
 				{/*search box and dropdown*/}
@@ -189,7 +190,7 @@ export default class App extends React.Component{
 							<p className="text-black dark:text-white text-center text-[25px]">Your searched country not found :(</p>
 								: 
 								<div className="w-[90%] xl:w-full mx-auto gap-[25px] grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-								{((countries || []).length <= 0) ?
+								{((countries || [])?.length <= 0) ?
 									this.displaySkeleton('card',8) : countries.map((country,i) => <Card key={i} url={country.flags.svg} name={country.name.common} population={country.population.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} region={country.region} capital={country.capital} onClickHandler={this.cardOnClickHandler} />)
 								}
 								</div>
@@ -198,16 +199,49 @@ export default class App extends React.Component{
 					</div>
 				}
 
-				{(this.state.modalActive === true && (this.state.dataDetails || []).length >0) &&
-							 <DetailsContainer url={this.state.dataDetails[0].flags.svg} name={this.state.dataDetails[0].name.common} population={this.state.dataDetails[0].population.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} region={this.state.dataDetails[0].region} subRegion={this.state.dataDetails[0].subregion} capital={this.state.dataDetails[0].capital} topDomain={this.state.dataDetails[0].tld.length > 1 ? this.state.dataDetails[0].tld[0] : this.state.dataDetails[0].tld} borders={this.state.dataDetails[0].borders} onClickHandler={this.toggleModal} curency={this.getCurrency(this.state.dataDetails[0].currencies).map((x) => x.length > 1 ? `${x},` : `${x}` )} lang={this.getLanguage(this.state.dataDetails[0].languages).map((x) => x.length > 1 ? `${x},` : `${x}` )} nativeName={this.getNativeName(this.state.dataDetails[0].name.nativeName).map((x) => x.length > 1 ? `${x},` : `${x}` )} />
+				{(this.state.modalActive === true && detailCountry?.length > 0) &&
+							 <DetailsContainer 
+							 url={
+							 	detailCountry[0].flags.svg
+							 } 
+							 name={
+							 	detailCountry[0].name.common
+							 } 
+							 population={
+							 	detailCountry[0].population.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+								} 
+								region={
+									detailCountry[0].region
+								} subRegion={
+									detailCountry[0].subregion
+								} 
+								capital={
+									detailCountry[0].capital
+								} topDomain={
+									detailCountry[0].tld?.length > 1 ? detailCountry[0].tld[0] : detailCountry[0].tld
+								} 
+								borders={
+									detailCountry[0].borders
+								} 
+								onClickHandler={
+									this.toggleModal} curency={this.getCurrency(detailCountry[0].currencies).map((x) => x?.length > 1 ? `${x},` : `${x}` )
+								} 
+								lang={
+									this.getLanguage(detailCountry[0].languages).map((x) => x?.length > 1 ? `${x},` : `${x}` )
+								} 
+								nativeName={
+									this.getNativeName(detailCountry[0].name.nativeName).map((x) => x?.length > 1 ? `${x},` : `${x}` )
+								} />
 				}
-				{(this.state.modalActive === true && this.state.dataDetails === undefined) && 
+
+
+				{(this.state.modalActive === true && detailCountry === undefined) && 
 					this.displaySkeleton('details')
 				}
 
 				
 			</>
-		)
+		 )
 	}
 }
 
